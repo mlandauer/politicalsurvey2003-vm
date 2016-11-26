@@ -42,6 +42,10 @@
     copy=no
   when: new_archive|changed
 
-- name: Configure apache
+- name: Configure site
   template: src=site.conf dest=/etc/apache2/sites-available/000-default.conf
+  notify: restart apache
+
+- name: Configure apache
+  template: src=apache2.conf dest=/etc/apache2/apache2.conf
   notify: restart apache
