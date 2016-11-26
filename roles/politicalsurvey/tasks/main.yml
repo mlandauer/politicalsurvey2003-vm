@@ -1,0 +1,30 @@
+- name: Install perl
+  apt: pkg=perl
+
+- name: Install cpanm
+  apt: pkg=cpanminus
+
+- name: Install libgd
+  apt: pkg=libgd-dev
+
+- name: Install required perl modules
+  cpanm: name={{ item }}
+  with_items:
+    - CGI
+    - CGI::Carp
+    - CGI::Fast
+    - DBD::SQLite
+    - DBI
+    - Data::Dumper
+    - Error
+    - GD
+    - HTML::Entities
+    - IO::File
+    - IO::Pipe
+    - Inline
+    - Math::MatrixReal
+    - POSIX
+    - Text::CSV
+
+- name: Install apache
+  apt: pkg=apache2
