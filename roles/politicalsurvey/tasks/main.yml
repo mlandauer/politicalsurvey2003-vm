@@ -49,3 +49,7 @@
 - name: Configure apache
   template: src=apache2.conf dest=/etc/apache2/apache2.conf
   notify: restart apache
+
+- name: Enable the apache include module
+  apache2_module: state=present name=include
+  notify: restart apache
