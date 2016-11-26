@@ -53,3 +53,7 @@
 - name: Enable the apache include module
   apache2_module: state=present name=include
   notify: restart apache
+
+- name: Install fast cgi module for apache
+  apt: pkg=libapache2-mod-fcgid
+  notify: restart apache
