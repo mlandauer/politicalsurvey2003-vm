@@ -41,3 +41,6 @@
     dest="/srv"
     copy=no
   when: new_archive|changed
+
+- name: Configure apache
+  template: src=apache.conf dest=/etc/apache2/sites-available/000-default.conf
