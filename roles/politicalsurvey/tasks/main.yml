@@ -28,3 +28,16 @@
 
 - name: Install apache
   apt: pkg=apache2
+
+- name: Download tarball of politicalsurvey
+  get_url:
+    url="http://politics.beasts.org/internals/politicalsurvey.tar.gz"
+    dest="/srv"
+  register: new_archive
+
+- name: Unarchive source
+  unarchive:
+    src="/srv/politicalsurvey.tar.gz"
+    dest="/srv"
+    copy=no
+  when: new_archive|changed
