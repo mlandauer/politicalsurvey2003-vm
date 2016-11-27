@@ -76,3 +76,9 @@
     - scripts/publicdump
     - scripts/report
     - scripts/texstatements
+
+# Not sure this is the correct file - pretty sure it's not in the correct format
+- name: Download compressed country to ip database
+  get_url:
+    url="http://software77.net/geo-ip/?DL=1"
+    dest="/srv/politicalsurvey/misc/ip-to-country.csv.gz"
