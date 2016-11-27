@@ -57,3 +57,22 @@
 - name: Install fast cgi module for apache
   apt: pkg=libapache2-mod-fcgid
   notify: restart apache
+
+- name: Replace path in source code
+  replace: dest=/srv/politicalsurvey/{{ item }} regexp='/path/to/politicalsurvey/' replace='/srv/politicalsurvey/' backup=yes
+  with_items:
+    - web/scripts/survey
+    - web/scripts/statementlist
+    - web/scripts/results
+    - web/scripts/eigenvectors
+    - web/scripts/celebrity
+    - lib/PoliticalSurvey.pm
+    - scripts/aggregate
+    - scripts/allresscatter
+    - scripts/eigen
+    - scripts/makedatabase
+    - scripts/newstatements
+    - scripts/ploteigs
+    - scripts/publicdump
+    - scripts/report
+    - scripts/texstatements
