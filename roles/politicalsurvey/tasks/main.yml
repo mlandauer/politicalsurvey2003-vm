@@ -97,3 +97,22 @@
   command: bunzip2 -k /srv/politicalsurvey/dump.sql.bz2
   args:
     creates: /srv/politicalsurvey/dump.sql
+
+- name: Comment out the ip-to-country.csv loading
+  replace:
+    dest: /srv/politicalsurvey/scripts/makedatabase
+    regexp: '^[^#](.*ip-to-country.*)$'
+    replace: '#\1'
+    backup: yes
+
+- name: Create the sqlite database
+  command: ./makedatabase
+  args:
+    chdir: /srv/politicalsurvey/scripts
+    creates: /srv/politicalsurvey/politicalsurvey.sqlite
+
+- name: Give correct permissions to sqlite database
+  file:
+    path: /srv/politicalsurvey/politicalsurvey.sqlite
+    owner: www-data
+    group: www-data
