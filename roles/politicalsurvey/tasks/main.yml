@@ -116,3 +116,50 @@
     path: /srv/politicalsurvey/politicalsurvey.sqlite
     owner: www-data
     group: www-data
+
+- name: Install sqlite command
+  apt: pkg=sqlite3
+
+- name: Patch up database dump file
+  replace:
+    dest: /srv/politicalsurvey/dump.sql
+    regexp: 1delete
+    replace: delete
+    backup: yes
+
+- name: Patch up database dump file
+  replace:
+    dest: /srv/politicalsurvey/dump.sql
+    regexp: insert into table
+    replace: insert into
+    backup: yes
+
+# Because the id's don't match up to the referenced id's. Annoying
+- name: Remove the inserting of data into the session table
+  lineinfile:
+    dest: /srv/politicalsurvey/dump.sql
+    regexp: insert into session
+    state: absent
+    backup: yes
+
+- name: Remove some other offending lines
+  lineinfile:
+    dest: /srv/politicalsurvey/dump.sql
+    regexp: "insert into answer.*'(-483648|171000|88541|427172|457529|816422|658629|31687|116183)'"
+    state: absent
+    backup: yes
+
+- name: Another patch up
+  command: sed -i -z 's/delete from eigenvalue;/delete from eigenvector;/2' dump.sql
+  args:
+    chdir: /srv/politicalsurvey
+
+- name: And another patch up
+  replace:
+    dest: /srv/politicalsurvey/dump.sql
+    regexp: "insert into eigenvalue \\(n, x, i, setid\\)"
+    replace: "insert into eigenvector (n, x, i, setid)"
+    backup: yes
+
+- name: Load initial data into database
+  shell: sqlite3 -bail /srv/politicalsurvey/politicalsurvey.sqlite < /srv/politicalsurvey/dump.sql
