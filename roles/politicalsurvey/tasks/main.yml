@@ -30,6 +30,7 @@
     - Math::MatrixReal
     - POSIX
     - Text::CSV
+    - Inline::C
 
 - name: Install apache
   apt: pkg=apache2
@@ -169,3 +170,13 @@
 
 - name: Load initial data into database
   shell: sqlite3 -bail /srv/politicalsurvey/politicalsurvey.sqlite < /srv/politicalsurvey/dump.sql
+
+- name: Install libgsl
+  apt: pkg=libgsl0-dev
+
+- name: Swap order of linking in source code
+  replace:
+      dest: /srv/politicalsurvey/lib/PoliticalSurvey/Eigs.pm
+      regexp: '-lgslcblas -lgsl'
+      replace: '-lgsl -lgslcblas'
+      backup: yes
