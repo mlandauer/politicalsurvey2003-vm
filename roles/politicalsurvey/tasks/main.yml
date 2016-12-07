@@ -47,6 +47,12 @@
     copy=no
   when: new_archive|changed
 
+- name: Fix permission of directory
+  file:
+    path: /srv/politicalsurvey
+    owner: www-data
+    group: www-data
+
 - name: Configure site
   template: src=site.conf dest=/etc/apache2/sites-available/000-default.conf
   notify: restart apache
