@@ -180,3 +180,9 @@
       regexp: '-lgslcblas -lgsl'
       replace: '-lgsl -lgslcblas'
       backup: yes
+
+- name: Install gmt
+  apt: pkg=gmt
+
+- name: Add gmt bin path for every login
+  template: src=gmt_bin_path.sh dest=/etc/profile.d/gmt_bin_path.sh
